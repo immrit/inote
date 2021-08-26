@@ -75,6 +75,7 @@ class _inoteViewState extends State<inoteView> {
                               child: ListView(
                                 children: [
                                   TextFormField(
+                                    textAlign: TextAlign.right,
                                     decoration: InputDecoration(
                                         hintText: "Title",
                                         border: OutlineInputBorder(
