@@ -7,6 +7,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter());
   await Hive.openBox<Todo>('todos');
+  await Hive.openBox<Cats>('cats');
 
   runApp(MyApp());
 }
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
           ),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
               backgroundColor: Colors.amber)),
-      home: const SplashScreen(),
+      home: const Directionality(
+        textDirection: TextDirection.rtl,
+        child: SplashScreen(),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }

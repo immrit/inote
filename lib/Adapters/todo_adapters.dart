@@ -11,3 +11,11 @@ class Todo {
 
   Todo({required this.title, required this.description});
 }
+
+@HiveType(typeId: 2)
+class Cats {
+  @HiveField(0)
+  late String title;
+
+  Cats({required this.title});
+}

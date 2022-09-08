@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inote/Adapters/todo_adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:inote/View/cats_page.dart';
 import 'package:inote/View/view_note.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:inote/View/writeNote.dart';
@@ -20,57 +21,54 @@ class _InoteViewState extends State<InoteView> {
   @override
   Widget build(BuildContext context) {
     var he = MediaQuery.of(context).size.height;
+
+//Menu Item
+    void handleClick(int item) {
+      switch (item) {
+        case 0:
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CatsPage()));
+          break;
+        case 1:
+          break;
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Inote"),
         // backgroundColor: Colors.amber,
-      ),
-      endDrawer: Drawer(
-        width: 250,
-        child: ListView(children: [
-          Stack(
-            children: [
-              Image.asset(
-                'lib/assets/images/drawerposter.jpg',
-              ),
-              Positioned(
-                top: 8,
-                left: 50,
-                right: 10,
-                bottom: 10,
-                child: Container(
-                  height: 110,
-                  width: 170,
-                  alignment: Alignment.bottomRight,
-                  // color: Colors.amber,
-                  child: const Text(
-                    " (: اوقات بخیر",
-                    style: TextStyle(
-                        backgroundColor: Colors.white70,
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )
+        actions: [
+          PopupMenuButton<int>(
+            onSelected: (item) => handleClick(item),
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(
+                  padding: EdgeInsets.only(left: 50),
+                  value: 1,
+                  child: Text('Github آی نوت در'),
+                  onTap: () async {
+                    var url = "https://github.com/immrit/inote";
+
+                    final Uri _url = Uri.parse(url);
+
+                    await launchUrl(_url, mode: LaunchMode.externalApplication);
+                  }),
+              PopupMenuItem<int>(
+                  padding: EdgeInsets.only(left: 80),
+                  value: 2,
+                  onTap: () async {
+                    var url =
+                        "https://myket.ir/app/com.example.inote?utm_source=search-ads-gift&utm_medium=cpc";
+
+                    final Uri _url = Uri.parse(url);
+
+                    await launchUrl(_url, mode: LaunchMode.externalApplication);
+                  },
+                  child: Text('ارسال بازخورد')),
             ],
-          ),
-          drawerItem(
-              "Github آی نوت در",
-              SizedBox(
-                  height: 30,
-                  child: Image.asset("lib/assets/images/github.png")),
-              "https://github.com/immrit/inote"),
-          drawerItem(
-              "ارسال بازخورد",
-              SizedBox(
-                  height: 30,
-                  child: Image.asset("lib/assets/images/myket.png")),
-              "https://myket.ir/app/com.example.inote?utm_source=search-ads-gift&utm_medium=cpc"),
-          // drawerItem("امتیاز به برنامه", Icons.star,
-          //     "https://myket.ir/app/com.example.inote?utm_source=search-ads-gift&utm_medium=cpc")
-        ]),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: ValueListenableBuilder(
@@ -216,7 +214,7 @@ class _InoteViewState extends State<InoteView> {
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
-                  onTap: () => _launchURL(),
+                  onTap: () => launchURL(),
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20),
                     child: SizedBox(
@@ -236,12 +234,20 @@ class _InoteViewState extends State<InoteView> {
         : const SizedBox.shrink();
   }
 
-  _launchURL() async {
+  launchURL() async {
     var url =
         'https://myket.ir/app/com.example.inote?utm_source=search-ads-gift&utm_medium=cpc';
-    // ignore: no_leading_underscores_for_local_identifiers
     final Uri _url = Uri.parse(url);
 
     await launchUrl(_url, mode: LaunchMode.externalApplication);
   }
+
+  // void showToast(String s) {
+  //   final scaffold = ScaffoldMessenger.of(context);
+  //   scaffold.showSnackBar(SnackBar(
+  //     content: const Text('Added to favorite'),
+  //     action: SnackBarAction(
+  //         label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+  //   ));
+  // }
 }
