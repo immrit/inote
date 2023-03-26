@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../Adapters/todo_adapters.dart';
 
 // ignore: must_be_immutable
@@ -87,11 +89,6 @@ class _WriteNoteState extends State<WriteNote> {
                             FocusScope.of(context)
                                 .requestFocus(descriptionfocus);
                           },
-                          // onChanged: (value) {
-                          //   setState(() {
-                          //     title = value;
-                          //   });
-                          // },
                         ),
                       ),
                       Padding(
@@ -103,18 +100,16 @@ class _WriteNoteState extends State<WriteNote> {
                           textAlign: TextAlign.right,
                           decoration: const InputDecoration.collapsed(
                               hintText: "...یادداشت کنید",
-                              // filled: true,
-
                               hintStyle: TextStyle(fontSize: 23)),
                           focusNode: descriptionfocus,
                           textDirection: TextDirection.rtl,
-
                           controller: descController,
-                          // onChanged: (value) {
-                          //   setState(() {
-                          //     description = value;
-                          //   });
-                          // },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "dsdd";
+                            }
+                            return null;
+                          },
                         ),
                       ),
                     ],
@@ -125,19 +120,24 @@ class _WriteNoteState extends State<WriteNote> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var newNote = Todo(
-              title: titleController.text, description: descController.text);
+          if (widget.formkey.currentState!.validate()) {
+            var newNote = Todo(
+                title: titleController.text, description: descController.text);
 
-          Box<Todo> submitDate = Hive.box("todos");
+            Box<Todo> submitDate = Hive.box("todos");
 
-          if (widget.todo != null) {
-            widget.todo!.title = newNote.title;
-            widget.todo!.description = newNote.description;
-            Navigator.pop(context);
+            if (widget.todo != null) {
+              widget.todo!.title = newNote.title;
+              widget.todo!.description = newNote.description;
+              Navigator.pop(context);
+            } else {
+              await submitDate
+                  .add(newNote)
+                  .then((value) => Navigator.pop(context));
+            }
           } else {
-            await submitDate
-                .add(newNote)
-                .then((value) => Navigator.pop(context));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("لطفا یادداشت خود را بنویسید")));
           }
         },
         child: const Icon(Icons.check),
