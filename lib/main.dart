@@ -21,12 +21,12 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       darkTheme: ThemeData.dark(),
       theme: ThemeData(
-          primaryColor: Colors.amber,
+          primaryColor: Colors.black,
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.amber,
+            backgroundColor: Colors.black,
           ),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Colors.amber)),
+              backgroundColor: Colors.black)),
       home: const Directionality(
         textDirection: TextDirection.rtl,
         child: SplashScreen(),

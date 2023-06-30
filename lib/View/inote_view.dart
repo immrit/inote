@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inote/Adapters/todo_adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:inote/View/cats_page.dart';
+import 'package:inote/View/update_screen.dart';
 import 'package:inote/View/view_note.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:inote/View/writeNote.dart';
@@ -133,9 +134,15 @@ class _InoteViewState extends State<InoteView> {
                                             onTap: (() => Navigator.of(context)
                                                 .push(MaterialPageRoute(
                                                     builder: (context) =>
-                                                        WriteNote(
-                                                          todo: todo,
-                                                        )))
+                                                        UpdateScreen(
+                                                            index: index,
+                                                            todo: todo,
+                                                            titleController:
+                                                                todo!.title
+                                                                    .toString(),
+                                                            descriptionController:
+                                                                todo.description
+                                                                    .toString())))
                                                 .then((value) =>
                                                     Navigator.pop(context))),
                                             trailing: const Icon(Icons.edit),
@@ -151,9 +158,12 @@ class _InoteViewState extends State<InoteView> {
                             },
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ViewNote(
-                                      title: todo!.title,
-                                      desc: todo.description)));
+                                  builder: (context) => UpdateScreen(
+                                      index: index,
+                                      todo: todo,
+                                      titleController: todo!.title.toString(),
+                                      descriptionController:
+                                          todo.description.toString())));
                             },
                             title: Text(todo!.title,
                                 textAlign: TextAlign.right,
@@ -241,13 +251,4 @@ class _InoteViewState extends State<InoteView> {
 
     await launchUrl(_url, mode: LaunchMode.externalApplication);
   }
-
-  // void showToast(String s) {
-  //   final scaffold = ScaffoldMessenger.of(context);
-  //   scaffold.showSnackBar(SnackBar(
-  //     content: const Text('Added to favorite'),
-  //     action: SnackBarAction(
-  //         label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-  //   ));
-  // }
 }

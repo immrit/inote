@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
+
 import '../Adapters/todo_adapters.dart';
 
 // ignore: must_be_immutable
 class WriteNote extends StatefulWidget {
-  WriteNote({Key? key, this.todo}) : super(key: key);
+  WriteNote({
+    Key? key,
+    this.index,
+    this.titleController,
+    this.descriptionController,
+    Todo? todo,
+  }) : super(key: key);
 
   final formkey = GlobalKey<FormState>();
-
   Todo? todo;
+  final index;
+  final titleController;
+  final descriptionController;
 
   @override
   State<WriteNote> createState() => _WriteNoteState();
@@ -18,14 +25,6 @@ class WriteNote extends StatefulWidget {
 
 class _WriteNoteState extends State<WriteNote> {
   late String title, description;
-
-  // submitDate() async {
-  //   if (widget.formkey.currentState!.validate()) {
-  //     Box<Todo> todobox = Hive.box<Todo>("todos");
-  //     todobox.add(Todo(title: title, description: description));
-  //     Navigator.pop(context);
-  //   }
-  // }
 
   late FocusNode titlefocus;
   late FocusNode descriptionfocus;
@@ -125,6 +124,14 @@ class _WriteNoteState extends State<WriteNote> {
                 title: titleController.text, description: descController.text);
 
             Box<Todo> submitDate = Hive.box("todos");
+
+            _updateData() {
+              Todo newData = Todo(
+                title: titleController.text,
+                description: descController.text,
+              );
+              submitDate.putAt(widget.index, newData);
+            }
 
             if (widget.todo != null) {
               widget.todo!.title = newNote.title;
