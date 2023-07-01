@@ -3,7 +3,6 @@ import 'package:inote/Adapters/todo_adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:inote/View/cats_page.dart';
 import 'package:inote/View/update_screen.dart';
-import 'package:inote/View/view_note.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:inote/View/writeNote.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -105,36 +104,43 @@ class _InoteViewState extends State<InoteView> {
                         itemBuilder: (context, index) {
                           Todo? todo = box.getAt(index);
 
-                          return ListTile(
-                            onLongPress: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return Container(
-                                      height: 123,
-                                      decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(30),
-                                              topRight: Radius.circular(30))),
-                                      child: Column(
-                                        children: [
-                                          ListTile(
-                                            onTap: (() async {
-                                              await box.deleteAt(index).then(
-                                                  (value) =>
-                                                      Navigator.pop(context));
-                                            }),
-                                            trailing: const Icon(Icons.delete),
-                                            title: const Text(
-                                              "حذف",
-                                              textAlign: TextAlign.right,
-                                            ),
-                                          ),
-                                          ListTile(
-                                            onTap: (() => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        UpdateScreen(
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Card(
+                              child: ListTile(
+                                onLongPress: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                          height: 123,
+                                          decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight:
+                                                      Radius.circular(30))),
+                                          child: Column(
+                                            children: [
+                                              ListTile(
+                                                onTap: (() async {
+                                                  await box
+                                                      .deleteAt(index)
+                                                      .then((value) =>
+                                                          Navigator.pop(
+                                                              context));
+                                                }),
+                                                trailing:
+                                                    const Icon(Icons.delete),
+                                                title: const Text(
+                                                  "حذف",
+                                                  textAlign: TextAlign.right,
+                                                ),
+                                              ),
+                                              ListTile(
+                                                onTap: (() => Navigator.of(
+                                                        context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: (context) => UpdateScreen(
                                                             index: index,
                                                             todo: todo,
                                                             titleController:
@@ -143,38 +149,43 @@ class _InoteViewState extends State<InoteView> {
                                                             descriptionController:
                                                                 todo.description
                                                                     .toString())))
-                                                .then((value) =>
-                                                    Navigator.pop(context))),
-                                            trailing: const Icon(Icons.edit),
-                                            title: const Text(
-                                              "ویرایش",
-                                              textAlign: TextAlign.right,
-                                            ),
+                                                    .then((value) =>
+                                                        Navigator.pop(
+                                                            context))),
+                                                trailing:
+                                                    const Icon(Icons.edit),
+                                                title: const Text(
+                                                  "ویرایش",
+                                                  textAlign: TextAlign.right,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  });
-                            },
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => UpdateScreen(
-                                      index: index,
-                                      todo: todo,
-                                      titleController: todo!.title.toString(),
-                                      descriptionController:
-                                          todo.description.toString())));
-                            },
-                            title: Text(todo!.title,
-                                textAlign: TextAlign.right,
-                                maxLines: 1,
-                                textDirection: TextDirection.rtl,
-                                overflow: TextOverflow.ellipsis),
-                            subtitle: Text(todo.description,
-                                textAlign: TextAlign.right,
-                                maxLines: 1,
-                                textDirection: TextDirection.rtl,
-                                overflow: TextOverflow.ellipsis),
+                                        );
+                                      });
+                                },
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => UpdateScreen(
+                                          index: index,
+                                          todo: todo,
+                                          titleController:
+                                              todo!.title.toString(),
+                                          descriptionController:
+                                              todo.description.toString())));
+                                },
+                                title: Text(todo!.title,
+                                    textAlign: TextAlign.right,
+                                    maxLines: 1,
+                                    textDirection: TextDirection.rtl,
+                                    overflow: TextOverflow.ellipsis),
+                                subtitle: Text(todo.description,
+                                    textAlign: TextAlign.right,
+                                    maxLines: 1,
+                                    textDirection: TextDirection.rtl,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
+                            ),
                           );
                         }),
                   ),
