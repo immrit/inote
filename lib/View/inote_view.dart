@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inote/Adapters/todo_adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:inote/View/cats_page.dart';
 import 'package:inote/View/update_screen.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:inote/View/writeNote.dart';
@@ -23,25 +22,14 @@ class _InoteViewState extends State<InoteView> {
     var he = MediaQuery.of(context).size.height;
 
 //Menu Item
-    void handleClick(int item) {
-      switch (item) {
-        case 0:
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CatsPage()));
-          break;
-        case 1:
-          break;
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Inote"),
+        title: const Text("VNote"),
         // backgroundColor: Colors.amber,
         actions: [
           PopupMenuButton<int>(
-            onSelected: (item) => handleClick(item),
             itemBuilder: (context) => [
               PopupMenuItem<int>(
                   padding: EdgeInsets.only(left: 50),

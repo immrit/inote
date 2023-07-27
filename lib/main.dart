@@ -7,8 +7,6 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter());
   await Hive.openBox<Todo>('todos');
-  await Hive.openBox<Cats>('cats');
-
   runApp(MyApp());
 }
 
@@ -17,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Inote',
+      title: 'Vista Note',
       themeMode: ThemeMode.system,
       darkTheme: ThemeData.dark(),
       theme: ThemeData(
